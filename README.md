@@ -1,14 +1,19 @@
 # Express XSS Sanitizer
 Express 4.x middleware which sanitizes user input data (in req.body, req.query, req.headers and req.params) to prevent Cross Site Scripting (XSS) attack.
 
-![GitHub](https://img.shields.io/github/license/ahmedadelfahim/express-xss-sanitizer) ![npm](https://img.shields.io/npm/v/express-xss-sanitizer) ![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/express-xss-sanitizer) ![npm](https://img.shields.io/npm/dt/express-xss-sanitizer)
+[![Build Status](https://img.shields.io/github/forks/AhmedAdelFahim/express-xss-sanitizer.svg?style=for-the-badge)](https://github.com/AhmedAdelFahim/express-xss-sanitizer)
+[![Build Status](https://img.shields.io/github/stars/AhmedAdelFahim/express-xss-sanitizer.svg?style=for-the-badge)](https://github.com/AhmedAdelFahim/express-xss-sanitizer)
+[![Latest Stable Version](https://img.shields.io/npm/v/express-xss-sanitizer.svg?style=for-the-badge)](https://www.npmjs.com/package/express-xss-sanitizer)
+[![License](https://img.shields.io/npm/l/express-xss-sanitizer.svg?style=for-the-badge)](https://www.npmjs.com/package/express-xss-sanitizer)
+[![NPM Downloads](https://img.shields.io/npm/dt/express-xss-sanitizer.svg?style=for-the-badge)](https://www.npmjs.com/package/express-xss-sanitizer)
+[![NPM Downloads](https://img.shields.io/npm/dm/express-xss-sanitizer.svg?style=for-the-badge)](https://www.npmjs.com/package/express-xss-sanitizer)
 ## Installation
 ```bash
 $ npm install express-xss-sanitizer
 ```
 ## Usage
 Add as a piece of express middleware, before defining your routes.
-```
+```javascript
 const express = require('express');
 const bodyParser = require('body-parser');
 const { xss } = require('express-xss-sanitizer');
@@ -19,16 +24,19 @@ app.use(bodyParser.json({limit:'1kb'}));
 app.use(bodyParser.urlencoded({extended: true, limit:'1kb'}));
 app.use(xss());
 ```
-You can add options to specify allowed keys to be skipped at sanitization
-```
+You can add options to specify allowed keys or allowed attributes to be skipped at sanitization
+```javascript
 const options = {
-   allowedKeys: ['name']
+   allowedKeys: ['name'],
+   allowedAttributes: {
+         input: ['value'],
+   },
 }
 
 app.use(xss(options));
 ```
 You can add options to specify allowed tags to sanitize it and remove other tags
-```
+```javascript
 const options = {
    allowedTags: ['h1']
 }
@@ -36,7 +44,7 @@ const options = {
 app.use(xss(options));
 ```
 Add as a piece of express middleware, before single route.
-```
+```javascript
 const express = require('express');
 const bodyParser = require('body-parser');
 const { xss } = require('express-xss-sanitizer');
@@ -54,7 +62,7 @@ app.post("/test", function (req, res) {
 });
 ```
 You also can sanitize your data (object, array, string,etc) on the fly.
-```
+```javascript
 const { sanitize } = require('express-xss-sanitizer');
 
 // ...
